@@ -1,7 +1,10 @@
 package ar.edu.unrc.game2048;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing de Unidad para los métodos públicos de la clase Cell.
@@ -41,9 +44,39 @@ public class CellTest {
      */
     @Test
     public void TestCellBadValue() {
+        // Arrange.
         int value = 3;
+
+        // Act - Assert.
         assertThrows(IllegalArgumentException.class, () -> {
             new Cell(value); 
         });
     }
+
+    @Test 
+    public void isEmptyTest(){
+        // Arrange.
+        int valor = 0;
+        Cell celda = new Cell (valor);
+
+        // Act
+        boolean empty = celda.isEmpty();
+
+        // Assert.
+        assertTrue(empty);
+    }
+
+    @Test
+    public void isEmptyFalso(){
+        // Arrange.
+        int valor = 3;
+        Cell celda = new Cell (valor);
+
+        // Act
+        boolean empty = celda.isEmpty();
+
+        // Assert.
+        assertFalse(empty);
+    }
+    
 }
