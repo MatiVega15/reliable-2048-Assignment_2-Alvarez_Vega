@@ -8,6 +8,66 @@ import org.junit.jupiter.api.Test;
  * Testing de Unidad para los métodos públicos de la clase Board.
  */
 public class BoardTest {
+    /**
+     * Test para el constructor de la clase Board con tamaño por defecto.
+     */
+    @Test
+    public void constructorPorDefectoTest () {
+        // Arrange - Act.
+        Board tablero = new Board ();
+
+        // Assert.
+        assertEquals (4, tablero.getSize ());
+        assertEquals (0, tablero.getScore());
+    }
+
+    /**
+     * Test para el constructor de la clase Board con tamaño pasado como parámetro correcto.
+     */
+    @Test
+    public void constructorTamañoPorParametroCorrectoTest () {
+        // Arrange.
+        int size = 10;
+
+        // Act.
+        Board tablero = new Board (size);
+
+        // Assert.
+        assertEquals (10, tablero.getSize ());
+        assertEquals (0, tablero.getScore());
+    }
+
+    /**
+     * Test para el constructor de la clase Board con tamaño pasado como parámetro incorrecto.
+     */
+    @Test
+    public void constructorTamañoPorParametroIncorrectoTest () {
+        // Arrange.
+        int size = 0;
+
+        // Act - Assert.
+        assertThrows (IllegalArgumentException.class, () -> {Board tablero = new Board (size);});
+    }
+
+    /**
+     * Test para el constructor de la clase Board que copia un tablero dado.
+     */
+    @Test
+    public void constructorCopiaTableroTest () {
+        // Arrange.
+        Board tablero1 = new Board(10);
+        Cell celula1 = new Cell (2);
+        tablero1.setCell (0, 0, celula1);
+
+        // Act.
+        Board resultado = new Board (tablero1);
+
+        // Assert.
+        assertEquals (10, resultado.getSize ());
+        assertEquals (0, resultado.getScore());
+        assertEquals (celula1, resultado.getCell (0, 0));
+    }
+
     @Test
     public void testSize() {
         int value = Board.DEFAULT_SIZE;
