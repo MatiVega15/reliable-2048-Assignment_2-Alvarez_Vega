@@ -197,4 +197,25 @@ public class CellTest {
 
         assertFalse(canMerge);
     }
+
+    @Test
+    public void toStringEmpty() {
+        // Arrange
+        int value = 0;
+        Cell myCell = new Cell(value);
+
+        // Act - Assert
+        assertEquals(".", myCell.toString());
+    }
+
+    @Test
+    public void toStringWithValue() {
+        // Arrange
+        int value = 2;
+        Cell myCell = new Cell(value);
+        
+        // Act - Assert
+        assertEquals("2", myCell.toString());
+    }
+
 }
