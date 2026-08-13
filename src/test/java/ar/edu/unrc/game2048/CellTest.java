@@ -35,4 +35,15 @@ public class CellTest {
         // Act - Assert.
         assertThrows (IllegalArgumentException.class, () -> {Cell celula = new Cell (valor);});
     }
+
+    /**
+     * Test para el constructor de la clase Cell con parametro no potencia de 2
+     */
+    @Test
+    public void TestCellBadValue() {
+        int value = 3;
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Cell(value); 
+        });
+    }
 }
