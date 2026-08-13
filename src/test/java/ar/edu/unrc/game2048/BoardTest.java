@@ -28,6 +28,32 @@ public class BoardTest {
     }
 
     @Test
+    public void testGetScore() {
+        int value = 2048;
+        Cell cell = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(0, 0, cell);
+
+        boolean isValid = board.getScore() == value;
+
+        assertFalse(isValid);
+    }
+
+    @Test
+    public void testAddCell() {
+        int value = 512;
+        Cell cell = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(1, 0, cell);
+
+        boolean isAdded = board.getCell(1, 0).equals(cell);
+
+        assertTrue(isAdded);
+    }
+
+    @Test
     public void testIsWinning() {
         int value = 2048;
         Cell cell = new Cell(value);
