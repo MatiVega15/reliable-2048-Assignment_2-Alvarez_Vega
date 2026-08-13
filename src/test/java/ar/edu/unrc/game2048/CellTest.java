@@ -151,4 +151,27 @@ public class CellTest {
         // Act - Assert.
         assertThrows (IllegalArgumentException.class, () -> {celda1.mergeWith (celda2);});
     }
+
+    @Test
+    public void equalsTestPositive() {
+        int value = 2;
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(value);
+
+        boolean canMerge = myCell1.equals(myCell2);
+
+        assertTrue(canMerge);
+    }
+
+    @Test
+    public void equalsTestNegative() {
+        int value1 = 0;
+        int value2 = 2;
+        Cell myCell1 = new Cell(value1);
+        Cell myCell2 = new Cell(value2);
+
+        boolean canMerge = myCell1.equals(myCell2);
+
+        assertFalse(canMerge);
+    }
 }
