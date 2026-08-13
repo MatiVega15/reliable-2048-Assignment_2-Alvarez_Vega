@@ -78,5 +78,15 @@ public class CellTest {
         // Assert.
         assertFalse(empty);
     }
+
+    @Test
+    public void testGetValue(){
+        // Arrange
+        int valor = 2;
+        Cell celda = new Cell(valor);
+
+        // Act - Assert.
+        assertEquals(2, celda.getValue());
+    }
     
 }
