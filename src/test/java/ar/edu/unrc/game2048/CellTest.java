@@ -69,7 +69,7 @@ public class CellTest {
     @Test
     public void isEmptyFalso(){
         // Arrange.
-        int valor = 3;
+        int valor = 4;
         Cell celda = new Cell (valor);
 
         // Act
