@@ -88,5 +88,37 @@ public class CellTest {
         // Act - Assert.
         assertEquals(2, celda.getValue());
     }
-    
+
+    @Test
+    public void canMergeValid() {
+        int value = 2;
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(value);
+
+        boolean canMerge = myCell1.canMergeWith(myCell2);
+
+        assertTrue(canMerge);
+    }
+
+    @Test
+    public void canMergeInvalidNewEmpty() {
+        int value = 2;
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(0);
+
+        boolean canMerge = myCell1.canMergeWith(myCell2);
+
+        assertFalse(canMerge);
+    }
+
+    @Test
+    public void canMergeInvalidEmpty() {
+        int value = 2;
+        Cell myCell1 = new Cell(0);
+        Cell myCell2 = new Cell(value);
+
+        boolean canMerge = myCell1.canMergeWith(myCell2);
+
+        assertFalse(canMerge);
+    }
 }
