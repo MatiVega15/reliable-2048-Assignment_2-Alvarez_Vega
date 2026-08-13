@@ -228,4 +228,76 @@ public class BoardTest {
         // Assert.
         assertFalse (resultado);
     }
+
+    @Test
+    public void testMoveUp() {
+        int value = 2;
+
+        Cell finalCell = new Cell(2 * value);
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(0, 0, myCell1);
+        board.setCell(1, 0, myCell2);
+        assertTrue(board.moveUp());
+
+        boolean movedUp = board.getCell(0, 0).equals(finalCell);
+
+        assertTrue(movedUp);
+    }
+
+    @Test
+    public void testMoveDown() {
+        int value = 2;
+
+        Cell finalCell = new Cell(2 * value);
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(2, 0, myCell1);
+        board.setCell(3, 0, myCell2);
+        assertTrue(board.moveDown());
+
+        boolean movedUp = board.getCell(3, 0).equals(finalCell);
+
+        assertTrue(movedUp);
+    }
+
+    @Test
+    public void testMoveLeft() {
+        int value = 2;
+
+        Cell finalCell = new Cell(2 * value);
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(0, 0, myCell1);
+        board.setCell(0, 1, myCell2);
+        assertTrue(board.moveLeft());
+
+        boolean movedUp = board.getCell(0, 0).equals(finalCell);
+
+        assertTrue(movedUp);
+    }
+
+    @Test
+    public void testMoveRight() {
+        int value = 2;
+
+        Cell finalCell = new Cell(2 * value);
+        Cell myCell1 = new Cell(value);
+        Cell myCell2 = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(0, 2, myCell1);
+        board.setCell(0, 3, myCell2);
+        assertTrue(board.moveRight());
+
+        boolean movedUp = board.getCell(0, 3).equals(finalCell);
+
+        assertTrue(movedUp);
+    }
 }
