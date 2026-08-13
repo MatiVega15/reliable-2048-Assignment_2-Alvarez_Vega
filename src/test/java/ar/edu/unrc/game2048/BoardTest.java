@@ -26,4 +26,30 @@ public class BoardTest {
 
         assertFalse(isBoardCorrect);
     }
+
+    @Test
+    public void testIsWinning() {
+        int value = 2048;
+        Cell cell = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(0, 0, cell);
+
+        boolean isWinning = board.isWinningBoard();
+
+        assertTrue(isWinning);
+    }
+
+    @Test
+    public void testIsWinningNegative() {
+        int value = 1024;
+        Cell cell = new Cell(value);
+
+        Board board = new Board();
+        board.setCell(0, 0, cell);
+
+        boolean isWinning = board.isWinningBoard();
+
+        assertFalse(isWinning);
+    }
 }
