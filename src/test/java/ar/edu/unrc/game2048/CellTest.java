@@ -121,4 +121,34 @@ public class CellTest {
 
         assertFalse(canMerge);
     }
+
+    /**
+     * Test para el método mergeWith con celdas del mismo valor.
+     */
+    @Test
+    public void mergeWithCorrectoTest () {
+        // Arrange.
+        Cell celda1 = new Cell (2);
+        Cell celda2 = new Cell (2);
+
+        // Act.
+        Cell resultado = celda1.mergeWith (celda2);
+
+        // Assert.
+        assertFalse (resultado.isEmpty ());
+        assertEquals (4, resultado.getValue ());
+    }
+
+    /**
+     * Test para el método mergeWith con celdas de distinto valor.
+     */
+    @Test
+    public void mergeWithIncorrectoTest () {
+        // Arrange.
+        Cell celda1 = new Cell (2);
+        Cell celda2 = new Cell (4);
+
+        // Act - Assert.
+        assertThrows (IllegalArgumentException.class, () -> {celda1.mergeWith (celda2);});
+    }
 }
