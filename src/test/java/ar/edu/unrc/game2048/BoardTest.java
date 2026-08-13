@@ -195,4 +195,37 @@ public class BoardTest {
         assertFalse(board.isFull());
     }
 
+    /**
+     * Test para el método hasEmptyCell con al menos una celda vacía.
+     */
+    @Test
+    public void hasEmptyCellConCeldaVaciaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, new Cell (8));
+
+        // Act.
+        boolean resultado = tablero.hasEmptyCells ();
+
+        // Assert.
+        assertTrue (resultado);
+    }
+
+    /**
+     * Test para el método hasEmptyCell sin celdas vacías.
+     */
+    @Test
+    public void hasEmptyCellSinCeldaVaciaTest () {
+        // Arrange.
+        Board tablero = new Board (1);
+        tablero.setCell (0, 0, new Cell (2));
+
+        // Act.
+        boolean resultado = tablero.hasEmptyCells ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
 }
