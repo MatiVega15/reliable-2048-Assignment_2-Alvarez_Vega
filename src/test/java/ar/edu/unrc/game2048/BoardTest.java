@@ -342,4 +342,28 @@ public class BoardTest {
         // Assert.
         assertTrue (conjunto.isEmpty ());
     }
+
+    /**
+     * Test para el método getCell con una posición inválida.
+     */
+    @Test
+    public void getCellPosicionInvalidaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (2, 0);});
+    }
+
+    /**
+     * Test para el método getCell con una posición inválida negativa.
+     */
+    @Test
+    public void getCellPosicionNegativaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (-2, -1);});
+    }
 }
