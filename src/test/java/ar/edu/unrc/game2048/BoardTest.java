@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
+import java.util.Set;
+
 /**
  * Testing de Unidad para los métodos públicos de la clase Board.
  */
@@ -181,6 +183,7 @@ public class BoardTest {
         Cell cell2 = new Cell(16);
         Cell cell3 = new Cell(8);
         board.setCell(0, 0, cell1);
+        board.setCell(0, 1, Cell.EMPTY);
         board.setCell(1,0, cell3);
         board.setCell(1, 1, cell2);
         // Act - Assert
@@ -205,6 +208,7 @@ public class BoardTest {
         tablero.setCell (0, 0, new Cell (2));
         tablero.setCell (0, 1, new Cell (4));
         tablero.setCell (1, 0, new Cell (8));
+        tablero.setCell (1, 1, Cell.EMPTY);
 
         // Act.
         boolean resultado = tablero.hasEmptyCells ();
@@ -299,5 +303,43 @@ public class BoardTest {
         boolean movedUp = board.getCell(0, 3).equals(finalCell);
 
         assertTrue(movedUp);
+    }
+
+    /**
+     * Test para el método getEmptyPositions con celdas vacías.
+     */
+    @Test
+    public void getEmptyPositionsConCeldasVaciasTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, new Cell (8));
+        tablero.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        Set <Board.Position> conjunto = tablero.getEmptyPositions ();
+
+        // Assert.
+        assertEquals (1, conjunto.size ());
+    }
+
+    /**
+     * Test para el método getEmptyPositions sin celdas vacías.
+     */
+    @Test
+    public void getEmptyPositionsSinCeldasVaciasTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, new Cell (8));
+        tablero.setCell (1, 1, new Cell (8));
+
+        // Act.
+        Set <Board.Position> conjunto = tablero.getEmptyPositions ();
+
+        // Assert.
+        assertTrue (conjunto.isEmpty ());
     }
 }
