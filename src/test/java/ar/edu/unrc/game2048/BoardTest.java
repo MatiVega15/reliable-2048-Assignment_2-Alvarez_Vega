@@ -366,4 +366,28 @@ public class BoardTest {
         // Act - Asssert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (-2, -1);});
     }
+
+    /**
+     * Test para el método setCell con celda nula.
+     */
+    @Test
+    public void setCellNulaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IllegalArgumentException.class, () -> {tablero.setCell (0, 0, null);});
+    }
+
+    /**
+     * Test para el método setCell en posición inválida.
+     */
+    @Test
+    public void setCellPosicionInvalidaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 0, new Cell (2));});
+    }
 }
