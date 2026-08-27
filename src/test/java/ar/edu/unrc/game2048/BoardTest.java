@@ -344,15 +344,27 @@ public class BoardTest {
     }
 
     /**
-     * Test para el método getCell con una posición inválida.
+     * Test para el método getCell con una columna inválida.
      */
     @Test
-    public void getCellPosicionInvalidaTest () {
+    public void getCellColumnaInvalidaTest () {
         // Arrange.
         Board tablero = new Board (2);
 
         // Act - Asssert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (2, 0);});
+    }
+
+    /**
+     * Test para el método getCell con una fila inválida.
+     */
+    @Test
+    public void getCellFilaInvalidaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (1, -1);});
     }
 
     /**
@@ -368,6 +380,23 @@ public class BoardTest {
     }
 
     /**
+     * Test para el método getCell con una posición válida.
+     */
+    @Test
+    public void getCellPosicionValidaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        Cell celda = new Cell (8);
+        tablero.setCell (0, 0, celda);
+
+        // Act.
+        Cell resultado = tablero.getCell (0, 0);
+
+        // Asssert.
+        assertEquals (celda, resultado);
+    }
+
+    /**
      * Test para el método setCell con celda nula.
      */
     @Test
@@ -380,14 +409,38 @@ public class BoardTest {
     }
 
     /**
-     * Test para el método setCell en posición inválida.
+     * Test para el método setCell con fila inválida.
      */
     @Test
-    public void setCellPosicionInvalidaTest () {
+    public void setCellFilaInvalidaTest () {
         // Arrange.
         Board tablero = new Board (2);
 
         // Act - Asssert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 0, new Cell (2));});
+    }
+
+    /**
+     * Test para el método setCell con columna inválida.
+     */
+    @Test
+    public void setCellColumnaInvalidaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (0, 2, new Cell (2));});
+    }
+
+    /**
+     * Test para el método setCell con fila y columna inválida.
+     */
+    @Test
+    public void setCellFilaYColumnaInvalidasTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act - Asssert.
+        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 2, new Cell (2));});
     }
 }
