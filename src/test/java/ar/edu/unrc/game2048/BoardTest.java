@@ -567,6 +567,57 @@ public class BoardTest {
     }
 
     /**
+     * Test para el método moveRight sin movimiento.
+     */
+    @Test
+    public void moveRightSinMovimientoTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, Cell.EMPTY);
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, Cell.EMPTY);
+        tablero.setCell (1, 1, new Cell (2));
+
+        // Act.
+        boolean resultado = tablero.moveRight ();
+
+        // Assert.
+        assertFalse (resultado);
+        assertEquals (0, tablero.getCell (0, 0).getValue ());
+        assertEquals (4, tablero.getCell (0, 1).getValue ());
+        assertEquals (0, tablero.getCell (1, 0).getValue ());
+        assertEquals (2, tablero.getCell (1, 1).getValue ());
+    }
+
+    /**
+     * Test para el método moveRight sin fusiones.
+     */
+    @Test
+    public void moveRightSinFusionesTest () {
+        // Arrange.
+        Board tablero = new Board (3);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, Cell.EMPTY);
+        tablero.setCell (0, 2, Cell.EMPTY);
+        tablero.setCell (1, 0, new Cell (2));
+        tablero.setCell (1, 1, new Cell (4));
+        tablero.setCell (1, 2, Cell.EMPTY);
+        tablero.setCell (2, 0, new Cell (2));
+        tablero.setCell (2, 1, Cell.EMPTY);
+        tablero.setCell (2, 2, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero.moveRight ();
+
+        // Assert.
+        assertTrue (resultado);
+        assertEquals (2, tablero.getCell (0, 2).getValue ());
+        assertEquals (2, tablero.getCell (1, 1).getValue ());
+        assertEquals (4, tablero.getCell (1, 2).getValue ());
+        assertEquals (2, tablero.getCell (2, 2).getValue ());
+    }
+
+    /**
      * Test para el método getEmptyPositions con celdas vacías.
      */
     @Test
