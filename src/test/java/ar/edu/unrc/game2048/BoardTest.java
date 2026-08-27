@@ -159,6 +159,111 @@ public class BoardTest {
         assertTrue(board.isLosingBoard());
     }
 
+    /**
+     * Test para el método isLosing con al menos una celda vacía.
+     */
+    @Test
+    public void isLosingBoardConCeldaVaciaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, new Cell (8));
+        tablero.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero.isLosingBoard ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método isLosing con fusión horizontal.
+     */
+    @Test
+    public void isLosingBoardConFusionesHorizontalesTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (2));
+        tablero.setCell (1, 0, new Cell (4));
+        tablero.setCell (1, 1, new Cell (8));
+
+        // Act.
+        boolean resultado = tablero.isLosingBoard ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método isLosing con fusión horizontal.
+     */
+    @Test
+    public void isLosingBoardConFusionesHorizontalesTableroMayorTest () {
+        // Arrange.
+        Board tablero = new Board (3);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (2));
+        tablero.setCell (0, 2, new Cell (4));
+        tablero.setCell (1, 0, new Cell (8));
+        tablero.setCell (1, 1, new Cell (16));
+        tablero.setCell (1, 2, new Cell (32));
+        tablero.setCell (2, 0, new Cell (64));
+        tablero.setCell (2, 1, new Cell (128));
+        tablero.setCell (2, 2, new Cell (256));
+
+        // Act.
+        boolean resultado = tablero.isLosingBoard ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método isLosing con fusión horizontal.
+     */
+    @Test
+    public void isLosingBoardConFusionesHorizontalesUltimasColumnasTest () {
+        // Arrange.
+        Board tablero = new Board (3);
+        tablero.setCell (0, 0, new Cell (4));
+        tablero.setCell (0, 1, new Cell (2));
+        tablero.setCell (0, 2, new Cell (2));
+        tablero.setCell (1, 0, new Cell (8));
+        tablero.setCell (1, 1, new Cell (16));
+        tablero.setCell (1, 2, new Cell (32));
+        tablero.setCell (2, 0, new Cell (64));
+        tablero.setCell (2, 1, new Cell (128));
+        tablero.setCell (2, 2, new Cell (256));
+
+        // Act.
+        boolean resultado = tablero.isLosingBoard ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método isLosing con fusión vertical.
+     */
+    @Test
+    public void isLosingBoardConFusionesVerticalesTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, new Cell (2));
+        tablero.setCell (1, 1, new Cell (8));
+
+        // Act.
+        boolean resultado = tablero.isLosingBoard ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
     @Test
     public void testFullBoardLleno(){
         //Arrange
