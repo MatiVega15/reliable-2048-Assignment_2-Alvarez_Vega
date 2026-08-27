@@ -504,6 +504,50 @@ public class BoardTest {
         assertTrue(movedUp);
     }
 
+    /**
+     * Test para el método moveLeft sin movimiento.
+     */
+    @Test
+    public void moveLeftSinMovimientoTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (4));
+        tablero.setCell (1, 0, Cell.EMPTY);
+        tablero.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero.moveLeft ();
+
+        // Assert.
+        assertFalse (resultado);
+        assertEquals (2, tablero.getCell (0, 0).getValue ());
+        assertEquals (4, tablero.getCell (0, 1).getValue ());
+        assertEquals (0, tablero.getCell (1, 0).getValue ());
+        assertEquals (0, tablero.getCell (1, 1).getValue ());
+    }
+
+    /**
+     * Test para el método moveLeft sin fusiones.
+     */
+    @Test
+    public void moveLeftSinFusionesTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, Cell.EMPTY);
+        tablero.setCell (0, 1, new Cell (2));
+        tablero.setCell (1, 0, Cell.EMPTY);
+        tablero.setCell (1, 1, new Cell (4));
+
+        // Act.
+        boolean resultado = tablero.moveLeft ();
+
+        // Assert.
+        assertTrue (resultado);
+        assertEquals (2, tablero.getCell (0, 0).getValue ());
+        assertEquals (4, tablero.getCell (1, 0).getValue ());
+    }
+
     @Test
     public void testMoveRight() {
         int value = 2;
