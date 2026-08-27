@@ -916,4 +916,31 @@ public class BoardTest {
         // Assert.
         assertNotEquals (hash1, hash2);
     }
+
+    /**
+     * Test para el método toString.
+     */
+    @Test
+    public void toStringTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, Cell.EMPTY);
+        tablero.setCell (1, 0, Cell.EMPTY);
+        tablero.setCell (1, 1, new Cell (16));
+
+        // Act.
+        String resultado = tablero.toString ();
+
+        // Assert.
+        String esperado =
+                "Score: 0\n" +
+                "+-----+-----+\n" +
+                "|    2|     |\n" +
+                "+-----+-----+\n" +
+                "|     |   16|\n" +
+                "+-----+-----+\n";
+
+        assertEquals (esperado, resultado);
+    }
 }
