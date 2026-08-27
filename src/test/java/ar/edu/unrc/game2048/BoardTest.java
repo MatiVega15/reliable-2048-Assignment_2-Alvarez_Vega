@@ -943,4 +943,196 @@ public class BoardTest {
 
         assertEquals (esperado, resultado);
     }
+
+    /**
+     * Test para los valores del enumerado Direction.
+     */
+    @Test
+    public void directionValoresTest () {
+        // Arrange - Act.
+        Board.Direction [] direcciones = Board.Direction.values ();
+
+        // Assert.
+        assertEquals (4, direcciones.length);
+        assertEquals (Board.Direction.UP, direcciones [0]);
+        assertEquals (Board.Direction.DOWN, direcciones [1]);
+        assertEquals (Board.Direction.LEFT, direcciones [2]);
+        assertEquals (Board.Direction.RIGHT, direcciones [3]);
+    }
+
+    /**
+     * Test para el constructor de Position.
+     */
+    @Test
+    public void positionConstructorTest () {
+        // Arrange.
+        int fila = 2;
+        int columna = 3;
+
+        // Act.
+        Board.Position posicion = new Board.Position (fila, columna);
+
+        // Assert.
+        assertEquals (fila, posicion.row);
+        assertEquals (columna, posicion.col);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con el mismo objeto como parámetro.
+     */
+    @Test
+    public void equalsPositionMismoObjetoTest () {
+        // Arrange.
+        Board.Position posicion = new Board.Position (0, 0);
+
+        // Act.
+        boolean resultado = posicion.equals (posicion);
+
+        // Assert.
+        assertTrue (resultado);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con un objeto nulo como parámetro.
+     */
+    @Test
+    public void equalsPositionObjetoNuloTest () {
+        // Arrange.
+        Board.Position posicion = new Board.Position (0, 0);
+
+        // Act.
+        boolean resultado = posicion.equals (null);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con un objeto de otro tipo como parámetro.
+     */
+    @Test
+    public void equalsPositionTipoDistintoTest () {
+        // Arrange.
+        Board.Position posicion = new Board.Position (0, 0);
+
+        // Act.
+        boolean resultado = posicion.equals ("posicion");
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con objetos iguales.
+     */
+    @Test
+    public void equalsPositionIgualesTest () {
+        // Arrange.
+        Board.Position posicion1 = new Board.Position (0, 0);
+        Board.Position posicion2 = new Board.Position (0, 0);
+
+        // Act.
+        boolean resultado = posicion1.equals (posicion2);
+
+        // Assert.
+        assertTrue (resultado);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con objetos distintos.
+     */
+    @Test
+    public void equalsPositionDistintosTest () {
+        // Arrange.
+        Board.Position posicion1 = new Board.Position (0, 0);
+        Board.Position posicion2 = new Board.Position (1, 1);
+
+        // Act.
+        boolean resultado = posicion1.equals (posicion2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con filas distintas.
+     */
+    @Test
+    public void equalsPositionFilasDistintasTest () {
+        // Arrange.
+        Board.Position posicion1 = new Board.Position (0, 0);
+        Board.Position posicion2 = new Board.Position (1, 0);
+
+        // Act.
+        boolean resultado = posicion1.equals (posicion2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals de la clase Position con columnas distintas.
+     */
+    @Test
+    public void equalsPositionColumnasDistintasTest () {
+        // Arrange.
+        Board.Position posicion1 = new Board.Position (0, 0);
+        Board.Position posicion2 = new Board.Position (0, 1);
+
+        // Act.
+        boolean resultado = posicion1.equals (posicion2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método hashCode de la clase Position iguales.
+     */
+    @Test
+    public void hashCodePositionIgualesTest () {
+        // Arrange.
+        Board.Position posicion1 = new Board.Position (2, 3);
+        Board.Position posicion2 = new Board.Position (2, 3);
+
+        // Act.
+        int hash1 = posicion1.hashCode ();
+        int hash2 = posicion2.hashCode ();
+
+        // Assert.
+        assertEquals (hash1, hash2);
+    }
+
+    /**
+     * Test para el método hashCode de la clase Position distintos.
+     */
+    @Test
+    public void hashCodePositionDistintosTest () {
+        // Arrange.
+        Board.Position posicion1 = new Board.Position (1, 3);
+        Board.Position posicion2 = new Board.Position (2, 3);
+
+        // Act.
+        int hash1 = posicion1.hashCode ();
+        int hash2 = posicion2.hashCode ();
+
+        // Assert.
+        assertNotEquals (hash1, hash2);
+    }
+
+    /**
+     * Test para el método toString de la clase Position.
+     */
+    @Test
+    public void toStringPositionTest () {
+        // Arrange.
+        Board.Position posicion = new Board.Position (1, 3);
+
+        // Act.
+        String resultado = posicion.toString ();
+
+        // Assert.
+        String esperado = "(1, 3)";
+        assertEquals (esperado, resultado);
+    }
 }
