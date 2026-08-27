@@ -755,4 +755,117 @@ public class BoardTest {
         // Act - Asssert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 2, new Cell (2));});
     }
+
+    /**
+     * Test para el método equals con el mismo objeto como parámetro.
+     */
+    @Test
+    public void equalsMismoObjetoTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act.
+        boolean resultado = tablero.equals (tablero);
+
+        // Assert.
+        assertTrue (resultado);
+    }
+
+    /**
+     * Test para el método equals con un objeto nulo como parámetro.
+     */
+    @Test
+    public void equalsObjetoNuloTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act.
+        boolean resultado = tablero.equals (null);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals con un objeto de distinto tipo como parámetro.
+     */
+    @Test
+    public void equalsObjetoDistintoTipoTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act.
+        boolean resultado = tablero.equals ("tablero");
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals con dos tableros iguales.
+     */
+    @Test
+    public void equalsTablerosIgualesTest () {
+        // Arrange.
+        Board tablero1 = new Board (2);
+        tablero1.setCell (0, 0, new Cell (2));
+        tablero1.setCell (0, 1, new Cell (4));
+        tablero1.setCell (1, 0, new Cell (4));
+        tablero1.setCell (1, 1, new Cell (2));
+        Board tablero2 = new Board (2);
+        tablero2.setCell (0, 0, new Cell (2));
+        tablero2.setCell (0, 1, new Cell (4));
+        tablero2.setCell (1, 0, new Cell (4));
+        tablero2.setCell (1, 1, new Cell (2));
+
+        // Act.
+        boolean resultado = tablero1.equals (tablero2);
+
+        // Assert.
+        assertTrue (resultado);
+    }
+
+    /**
+     * Test para el método equals con dimensiones distintos.
+     */
+    @Test
+    public void equalsDimensionesDistintasTest () {
+        // Arrange.
+        Board tablero1 = new Board (2);
+        Board tablero2 = new Board (1);
+
+        // Act.
+        boolean resultado = tablero1.equals (tablero2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals con puntuaciones distintas.
+     */
+    @Test
+    public void equalsPuntuacionesDistintasTest () {
+        // Arrange.
+        Board tablero1 = new Board (2);
+        tablero1.setCell (0, 0, new Cell (2));
+        tablero1.setCell (0, 1, new Cell (2));
+        tablero1.setCell (1, 0, Cell.EMPTY);
+        tablero1.setCell (1, 1, Cell.EMPTY);
+        tablero1.moveRight ();
+        tablero1.setCell (0, 0, Cell.EMPTY);
+        tablero1.setCell (1, 0, Cell.EMPTY);
+        tablero1.setCell (1, 1, Cell.EMPTY);
+        Board tablero2 = new Board (2);
+        tablero2.setCell (0, 0, Cell.EMPTY);
+        tablero2.setCell (0, 1, new Cell (4));
+        tablero2.setCell (1, 0, Cell.EMPTY);
+        tablero2.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero1.equals (tablero2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
 }
