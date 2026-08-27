@@ -1,12 +1,10 @@
 package ar.edu.unrc.game2048;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Testing de Unidad para los métodos públicos de la clase Board.
@@ -867,5 +865,55 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método hashCode con dos tableros iguales.
+     */
+    @Test
+    public void hashCodeTablerosIgualesTest () {
+        // Arrange.
+        Board tablero1 = new Board (2);
+        tablero1.setCell (0, 0, new Cell (2));
+        tablero1.setCell (0, 1, new Cell (4));
+        tablero1.setCell (1, 0, new Cell (4));
+        tablero1.setCell (1, 1, new Cell (2));
+        Board tablero2 = new Board (2);
+        tablero2.setCell (0, 0, new Cell (2));
+        tablero2.setCell (0, 1, new Cell (4));
+        tablero2.setCell (1, 0, new Cell (4));
+        tablero2.setCell (1, 1, new Cell (2));
+
+        // Act.
+        int hash1 = tablero1.hashCode ();
+        int hash2 = tablero2.hashCode ();
+
+        // Assert.
+        assertEquals (hash1, hash2);
+    }
+
+    /**
+     * Test para el método hashCode con dos tableros distintos.
+     */
+    @Test
+    public void hashCodeTablerosDistintosTest () {
+        // Arrange.
+        Board tablero1 = new Board (2);
+        tablero1.setCell (0, 0, new Cell (2));
+        tablero1.setCell (0, 1, new Cell (4));
+        tablero1.setCell (1, 0, new Cell (4));
+        tablero1.setCell (1, 1, new Cell (2));
+        Board tablero2 = new Board (2);
+        tablero2.setCell (0, 0, new Cell (2));
+        tablero2.setCell (0, 1, new Cell (2));
+        tablero2.setCell (1, 0, new Cell (2));
+        tablero2.setCell (1, 1, new Cell (2));
+
+        // Act.
+        int hash1 = tablero1.hashCode ();
+        int hash2 = tablero2.hashCode ();
+
+        // Assert.
+        assertNotEquals (hash1, hash2);
     }
 }
