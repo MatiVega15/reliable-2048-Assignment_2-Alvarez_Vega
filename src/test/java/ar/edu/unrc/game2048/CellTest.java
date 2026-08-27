@@ -123,6 +123,23 @@ public class CellTest {
     }
 
     /**
+     * Test para el método canMergeWith con ambas celdas nulas.
+     */
+    @Test
+    public void canMergeWithAmbasCeldasVaciasTest () {
+        // Arrange.
+        int valor = 0;
+        Cell celda1 = new Cell (valor);
+        Cell celda2 = new Cell (valor);
+
+        // Act.
+        boolean resultado = celda1.canMergeWith (celda2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
      * Test para el método mergeWith con celdas del mismo valor.
      */
     @Test
