@@ -356,6 +356,50 @@ public class BoardTest {
         assertTrue(movedUp);
     }
 
+    /**
+     * Test para el método moveUp sin movimiento.
+     */
+    @Test
+    public void moveUpSinMovimientoTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (8));
+        tablero.setCell (1, 0, new Cell (4));
+        tablero.setCell (1, 1, new Cell (16));
+
+        // Act.
+        boolean resultado = tablero.moveUp ();
+
+        // Assert.
+        assertFalse (resultado);
+        assertEquals (2, tablero.getCell (0, 0).getValue ());
+        assertEquals (4, tablero.getCell (1, 0).getValue ());
+        assertEquals (8, tablero.getCell (0, 1).getValue ());
+        assertEquals (16, tablero.getCell (1, 1).getValue ());
+    }
+
+    /**
+     * Test para el método moveUp sin fusiones.
+     */
+    @Test
+    public void moveUpSinFusionesTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, Cell.EMPTY);
+        tablero.setCell (0, 1, new Cell (8));
+        tablero.setCell (1, 0, new Cell (2));
+        tablero.setCell (1, 1, new Cell (16));
+
+        // Act.
+        boolean resultado = tablero.moveUp ();
+
+        // Assert.
+        assertTrue (resultado);
+        assertEquals (2, tablero.getCell (0, 0).getValue ());
+        assertEquals (8, tablero.getCell (0, 1).getValue ());
+    }
+
     @Test
     public void testMoveDown() {
         int value = 2;
