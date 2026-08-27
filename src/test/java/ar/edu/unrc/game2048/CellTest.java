@@ -192,6 +192,38 @@ public class CellTest {
         assertFalse(canMerge);
     }
 
+    /**
+     * Test para el método equals con un objeto nulo como parámetro.
+     */
+    @Test
+    public void equalsConParametroNuloTest () {
+        // Arrange.
+        Cell celda1 = new Cell (2);
+        Cell celda2 = null;
+
+        // Act.
+        boolean resultado = celda1.equals (celda2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método equals con un objeto de otro tipo como parámetro.
+     */
+    @Test
+    public void equalsConParametroDeOtroTipoTest () {
+        // Arrange.
+        Cell celda1 = new Cell (2);
+        String celda2 = "2";
+
+        // Act.
+        boolean resultado = celda1.equals (celda2);
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
     @Test
     public void hashCodeTestPositive() {
         int value = 2;
