@@ -238,7 +238,7 @@ public class Board {
         return !hasEmptyCells();
     }
 
-    // ==================== MOVE OPERATIONS (WITH DESIGN PROBLEMS) ====================
+    // ==================== MOVE OPERATIONS ====================
 
     /**
      * Moves all tiles upward.
@@ -256,34 +256,7 @@ public class Board {
                 column.add(grid[row][col]);
             }
 
-            // Remove empty cells (slide up)
-            List<Cell> nonEmpty = new ArrayList<>();
-            for (Cell cell : column) {
-                if (!cell.isEmpty()) {
-                    nonEmpty.add(cell);
-                }
-            }
-
-            // Merge adjacent equal cells
-            List<Cell> merged = new ArrayList<>();
-            int i = 0;
-            while (i < nonEmpty.size()) {
-                if (i + 1 < nonEmpty.size() &&
-                        nonEmpty.get(i).canMergeWith(nonEmpty.get(i + 1))) {
-                    Cell mergedCell = nonEmpty.get(i).mergeWith(nonEmpty.get(i + 1));
-                    merged.add(mergedCell);
-                    score += mergedCell.getValue();
-                    i += 2;
-                } else {
-                    merged.add(nonEmpty.get(i));
-                    i++;
-                }
-            }
-
-            // Pad with empty cells
-            while (merged.size() < size) {
-                merged.add(Cell.EMPTY);
-            }
+            List <Cell> merged = procesarLinea (column);
 
             // Put back into the column
             for (int row = 0; row < size; row++) {
@@ -291,11 +264,7 @@ public class Board {
             }
         }
 
-        boolean moved = !this.equals(previous);
-        if (moved) {
-            addRandomTile(); // Add new random tile after successful move
-        }
-        return moved;
+        return finalizarMovimiento (previous);
     }
 
     /**
@@ -314,34 +283,7 @@ public class Board {
                 column.add(grid[row][col]);
             }
 
-            // Remove empty cells
-            List<Cell> nonEmpty = new ArrayList<>();
-            for (Cell cell : column) {
-                if (!cell.isEmpty()) {
-                    nonEmpty.add(cell);
-                }
-            }
-
-            // Merge adjacent equal cells
-            List<Cell> merged = new ArrayList<>();
-            int i = 0;
-            while (i < nonEmpty.size()) {
-                if (i + 1 < nonEmpty.size() &&
-                        nonEmpty.get(i).canMergeWith(nonEmpty.get(i + 1))) {
-                    Cell mergedCell = nonEmpty.get(i).mergeWith(nonEmpty.get(i + 1));
-                    merged.add(mergedCell);
-                    score += mergedCell.getValue();
-                    i += 2;
-                } else {
-                    merged.add(nonEmpty.get(i));
-                    i++;
-                }
-            }
-
-            // Pad with empty cells
-            while (merged.size() < size) {
-                merged.add(Cell.EMPTY);
-            }
+            List <Cell> merged = procesarLinea (column);
 
             // Put back into the column (reverse back to original order)
             for (int row = size - 1; row >= 0; row--) {
@@ -349,11 +291,7 @@ public class Board {
             }
         }
 
-        boolean moved = !this.equals(previous);
-        if (moved) {
-            addRandomTile(); // Add new random tile after successful move
-        }
-        return moved;
+        return finalizarMovimiento (previous);
     }
 
     /**
@@ -372,34 +310,7 @@ public class Board {
                 rowList.add(grid[row][col]);
             }
 
-            // Remove empty cells
-            List<Cell> nonEmpty = new ArrayList<>();
-            for (Cell cell : rowList) {
-                if (!cell.isEmpty()) {
-                    nonEmpty.add(cell);
-                }
-            }
-
-            // Merge adjacent equal cells
-            List<Cell> merged = new ArrayList<>();
-            int i = 0;
-            while (i < nonEmpty.size()) {
-                if (i + 1 < nonEmpty.size() &&
-                        nonEmpty.get(i).canMergeWith(nonEmpty.get(i + 1))) {
-                    Cell mergedCell = nonEmpty.get(i).mergeWith(nonEmpty.get(i + 1));
-                    merged.add(mergedCell);
-                    score += mergedCell.getValue();
-                    i += 2;
-                } else {
-                    merged.add(nonEmpty.get(i));
-                    i++;
-                }
-            }
-
-            // Pad with empty cells
-            while (merged.size() < size) {
-                merged.add(Cell.EMPTY);
-            }
+            List <Cell> merged = procesarLinea (rowList);
 
             // Put back into the row
             for (int col = 0; col < size; col++) {
@@ -407,11 +318,7 @@ public class Board {
             }
         }
 
-        boolean moved = !this.equals(previous);
-        if (moved) {
-            addRandomTile(); // Add new random tile after successful move
-        }
-        return moved;
+        return finalizarMovimiento (previous);
     }
 
     /**
@@ -430,34 +337,7 @@ public class Board {
                 rowList.add(grid[row][col]);
             }
 
-            // Remove empty cells
-            List<Cell> nonEmpty = new ArrayList<>();
-            for (Cell cell : rowList) {
-                if (!cell.isEmpty()) {
-                    nonEmpty.add(cell);
-                }
-            }
-
-            // Merge adjacent equal cells
-            List<Cell> merged = new ArrayList<>();
-            int i = 0;
-            while (i < nonEmpty.size()) {
-                if (i + 1 < nonEmpty.size() &&
-                        nonEmpty.get(i).canMergeWith(nonEmpty.get(i + 1))) {
-                    Cell mergedCell = nonEmpty.get(i).mergeWith(nonEmpty.get(i + 1));
-                    merged.add(mergedCell);
-                    score += mergedCell.getValue();
-                    i += 2;
-                } else {
-                    merged.add(nonEmpty.get(i));
-                    i++;
-                }
-            }
-
-            // Pad with empty cells
-            while (merged.size() < size) {
-                merged.add(Cell.EMPTY);
-            }
+            List <Cell> merged = procesarLinea (rowList);
 
             // Put back into the row (reverse back to original order)
             for (int col = size - 1; col >= 0; col--) {
@@ -465,7 +345,58 @@ public class Board {
             }
         }
 
-        boolean moved = !this.equals(previous);
+        return finalizarMovimiento (previous);
+    }
+
+    /**
+     * Procesa una línea de celdas: elimina las celdas vacías, fusiona las celdas
+     * adyacentes y completa con celdas vacías.
+     *
+     * @param celdas Las celdas de la fila o columna a procesar.
+     * @return La línea procesada y completada con celdas vacías.
+     */
+    private List <Cell> procesarLinea (List<Cell> celdas) {
+        // Remove empty cells
+        List<Cell> nonEmpty = new ArrayList<>();
+        for (Cell cell : celdas) {
+            if (!cell.isEmpty()) {
+                nonEmpty.add(cell);
+            }
+        }
+
+        // Merge adjacent equal cells
+        List<Cell> merged = new ArrayList<>();
+        int i = 0;
+        while (i < nonEmpty.size()) {
+            if (i + 1 < nonEmpty.size() &&
+                    nonEmpty.get(i).canMergeWith(nonEmpty.get(i + 1))) {
+                Cell mergedCell = nonEmpty.get(i).mergeWith(nonEmpty.get(i + 1));
+                merged.add(mergedCell);
+                score += mergedCell.getValue();
+                i += 2;
+            } else {
+                merged.add(nonEmpty.get(i));
+                i++;
+            }
+        }
+
+        // Pad with empty cells
+        while (merged.size() < size) {
+            merged.add(Cell.EMPTY);
+        }
+
+        return merged;
+    }
+
+    /**
+     * Finaliza un movimiento verificando si el tablero cambió y agregando una
+     * nueva ficha aleatoria cuando el movimiento fue válido.
+     *
+     * @param previo El tablero antes de realizar el movimiento.
+     * @return true Si el tablero cambió, false en caso contrario.
+     */
+    private boolean finalizarMovimiento (Board previo) {
+        boolean moved = !this.equals(previo);
         if (moved) {
             addRandomTile(); // Add new random tile after successful move
         }
