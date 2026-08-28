@@ -34,7 +34,23 @@ public final class Cell {
         if (value < 0) {
             throw new IllegalArgumentException("Cell value cannot be negative: " + value);
         }
+
+        if (value > 0 && !esPotenciaDeDos (value)) {
+            throw new IllegalArgumentException ("El valor de la celda debe ser una potencia de dos: " + value);
+        }
+
         this.value = value;
+    }
+
+    /**
+     * Verifica si un valor es una potencia de 2.
+     *
+     * @param valor El valor a verificar.
+     * @return true Si el valor es una potencia de 2, false en caso contrario.
+     */
+    private static boolean esPotenciaDeDos (int valor) {
+        // Toda potencia de 2 tiene un único bit '1' en su representación binaria.
+        return Integer.bitCount (valor) == 1;
     }
     
     /**
