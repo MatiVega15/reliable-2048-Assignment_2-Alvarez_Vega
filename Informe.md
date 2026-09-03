@@ -79,3 +79,27 @@ Posteriormente, la Issue fue actualizada agregando:
 - Criterios de aceptación cumplidos.
 
 Las refactorizaciones identificadas que no fueron seleccionadas para implementar permanecen **abiertas** ([Issues abiertas](../../issues?q=is%3Aissue+is%3Aopen+label%3Arefactor)), mientras que las que fueron implementadas se encuentran documentadas y **cerradas** ([Issues cerradas](../../issues?q=is%3Aissue+is%3Aclosed+label%3Arefactor)).
+
+---
+
+# Assignment 2
+
+## Fase 1: Revisión inicial de métricas de cobertura
+
+Partiendo del Assignment 1, la Tests Suite cuenta con **100% de cobertura de sentencias y ramas** para las clases de interés (`Board` y `Cell`):
+
+| GROUP | PACKAGE | CLASS | INSTRUCTION MISSED | INSTRUCTION COVERED | BRANCH MISSED | BRANCH COVERED | LINE MISSED | LINE COVERED | COMPLEXITY MISSED | COMPLEXITY COVERED | METHOD MISSED | METHOD COVERED |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2048-game | ar.edu.unrc.game2048 | Cell | 0 | 132 | 0 | 28 | 0 | 23 | 0 | 24 | 0 | 10 |
+| 2048-game | ar.edu.unrc.game2048 | Board.Direction | 0 | 27 | 0 | 0 | 0 | 2 | 0 | 1 | 0 | 1 |
+| 2048-game | ar.edu.unrc.game2048 | Board | 0 | 906 | 0 | 116 | 0 | 152 | 0 | 82 | 0 | 24 |
+| 2048-game | ar.edu.unrc.game2048 | Board.Position | 0 | 62 | 0 | 10 | 0 | 10 | 0 | 9 | 0 | 4 |
+
+Por su parte, en términos de **mutación** cuenta con **90% de cobertura de mutación en la clase `Board` y 100% de cobertura de mutación en la clase `Cell`**:
+
+| Name         | Line Coverage | Mutation Coverage | Test Strength |
+|--------------|---:|---:|---:|
+| Board.java   | 100% (162/162) | 90% (140/155) | 90% (140/155) |
+| Cell.java    | 100% (23/23) | 100% (28/28) | 100% (28/28) |
+
+*Como `MainCLI` no fue testeada, se excluyó sus resultados del reporte.*
