@@ -2,6 +2,8 @@ package ar.edu.unrc.game2048;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashSet;
+import java.util.Random;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -49,6 +51,21 @@ public class BoardTest {
 
         // Act - Assert.
         assertThrows (IllegalArgumentException.class, () -> {Board tablero = new Board (size);});
+    }
+
+    /**
+     * Test para verificar que el constructor de la clase Board agrega 2 fichas aleatorias.
+     */
+    @Test
+    public void constructorAgregaDosFichasTest () {
+        // Arrange.
+        int size = 4;
+
+        // Act.
+        Board tablero = new Board (size);
+
+        // Assert.
+        assertEquals (14, tablero.getEmptyPositions ().size ());
     }
 
     /**
@@ -100,6 +117,26 @@ public class BoardTest {
         boolean isValid = board.getScore() == value;
 
         assertFalse(isValid);
+    }
+
+    /**
+     * Test para el método getScore con puntaje mayor a 0.
+     */
+    @Test
+    public void getScorePositivoTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (2));
+        tablero.setCell (0, 1, new Cell (2));
+        tablero.setCell (1, 0, new Cell (4));
+        tablero.setCell (1, 1, new Cell (8));
+        tablero.moveRight ();
+
+        // Act.
+        int resultado = tablero.getScore ();
+
+        // Assert.
+        assertEquals (4, resultado);
     }
 
     @Test
@@ -336,6 +373,26 @@ public class BoardTest {
         assertFalse (resultado);
     }
 
+    /**
+     * Test para corroborar que un movimiento exitoso agrega una nueva ficha.
+     */
+    @Test
+    public void movimientoExitosoAgregaNuevaFichaTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, Cell.EMPTY);
+        tablero.setCell (0, 1, new Cell (2));
+        tablero.setCell (1, 0, Cell.EMPTY);
+        tablero.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero.moveLeft ();
+
+        // Assert.
+        assertTrue (resultado);
+        assertEquals (2, tablero.getEmptyPositions ().size ());
+    }
+
     @Test
     public void testMoveUp() {
         int value = 2;
@@ -484,6 +541,29 @@ public class BoardTest {
         assertEquals (4, tablero.getCell (2, 0).getValue ());
     }
 
+    /**
+     * Test para el método moveDown corroborando el índice 0.
+     */
+    @Test
+    public void moveDownVerificandoIndiceCeroTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (16));
+        tablero.setCell (0, 1, new Cell (32));
+        tablero.setCell (1, 0, Cell.EMPTY);
+        tablero.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero.moveDown ();
+
+        // Assert.
+        assertTrue (resultado);
+        assertEquals (16, tablero.getCell (1, 0).getValue ());
+        assertEquals (32, tablero.getCell (1, 1).getValue ());
+        assertNotEquals (16, tablero.getCell (0, 0).getValue ());
+        assertNotEquals (32, tablero.getCell (0, 1).getValue ());
+    }
+
     @Test
     public void testMoveLeft() {
         int value = 2;
@@ -616,6 +696,29 @@ public class BoardTest {
     }
 
     /**
+     * Test para el método moveRight corroborando el índice 0.
+     */
+    @Test
+    public void moveRightVerificandoIndiceCeroTest () {
+        // Arrange.
+        Board tablero = new Board (2);
+        tablero.setCell (0, 0, new Cell (64));
+        tablero.setCell (0, 1, Cell.EMPTY);
+        tablero.setCell (1, 0, new Cell (128));
+        tablero.setCell (1, 1, Cell.EMPTY);
+
+        // Act.
+        boolean resultado = tablero.moveRight ();
+
+        // Assert.
+        assertTrue (resultado);
+        assertEquals (64, tablero.getCell (0, 1).getValue ());
+        assertEquals (128, tablero.getCell (1, 1).getValue ());
+        assertNotEquals (64, tablero.getCell (0, 0).getValue ());
+        assertNotEquals (128, tablero.getCell (1, 0).getValue ());
+    }
+
+    /**
      * Test para el método getEmptyPositions con celdas vacías.
      */
     @Test
@@ -661,8 +764,26 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
-        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (2, 0);});
+        // Act.
+        IndexOutOfBoundsException excepcion = assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (2, 0);});
+
+        // Assert.
+        assertEquals ("Position (2, 0) is out of bounds for board size 2", excepcion.getMessage ());
+    }
+
+    /**
+     * Test para el método getCell con una columna inválida.
+     */
+    @Test
+    public void getCellColumnaInvalida2Test () {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        // Act.
+        IndexOutOfBoundsException excepcion = assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (0, 2);});
+
+        // Assert.
+        assertEquals ("Position (0, 2) is out of bounds for board size 2", excepcion.getMessage ());
     }
 
     /**
@@ -673,7 +794,7 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
+        // Act - Assert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (1, -1);});
     }
 
@@ -685,7 +806,7 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
+        // Act - Assert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.getCell (-2, -1);});
     }
 
@@ -702,7 +823,7 @@ public class BoardTest {
         // Act.
         Cell resultado = tablero.getCell (0, 0);
 
-        // Asssert.
+        // Assert.
         assertEquals (celda, resultado);
     }
 
@@ -714,7 +835,7 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
+        // Act - Assert.
         assertThrows (IllegalArgumentException.class, () -> {tablero.setCell (0, 0, null);});
     }
 
@@ -726,8 +847,11 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
-        assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 0, new Cell (2));});
+        // Act.
+        IndexOutOfBoundsException excepcion = assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 0, new Cell (2));});
+
+        // Assert.
+        assertEquals ("Position (2, 0) is out of bounds for board size 2", excepcion.getMessage ());
     }
 
     /**
@@ -738,7 +862,7 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
+        // Act - Assert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (0, 2, new Cell (2));});
     }
 
@@ -750,7 +874,7 @@ public class BoardTest {
         // Arrange.
         Board tablero = new Board (2);
 
-        // Act - Asssert.
+        // Act - Assert.
         assertThrows (IndexOutOfBoundsException.class, () -> {tablero.setCell (2, 2, new Cell (2));});
     }
 
@@ -1134,5 +1258,80 @@ public class BoardTest {
         // Assert.
         String esperado = "(1, 3)";
         assertEquals (esperado, resultado);
+    }
+
+    /**
+     * Test para chequear el funcionamiento probabilístico de RandomTileStrategy.
+     */
+    @Test
+    public void randomTileStrategyTest () {
+        // Arrange.
+
+        // Mock para testear.
+        Random generadorTrucado = new Random () {
+            @Override
+            public double nextDouble () {
+                return 0.9;
+            }
+        };
+
+        RandomTileStrategy estrategia = new RandomTileStrategy (generadorTrucado);
+
+        // Act.
+        int resultado = estrategia.determinarValor ();
+
+        // Assert.
+        assertEquals (4, resultado);
+    }
+
+    /**
+     * Test para chequear el funcionamiento determinista de DeterministicTileStrategy.
+     */
+    @Test
+    public void deterministicTileStrategyValorTest () {
+        // Arrange.
+        DeterministicTileStrategy estrategia = new DeterministicTileStrategy ();
+
+        // Act.
+        int resultado = estrategia.determinarValor ();
+
+        // Assert.
+        assertEquals (2, resultado);
+    }
+
+    /**
+     * Test para chequear el funcionamiento determinista de DeterministicTileStrategy.
+     */
+    @Test
+    public void deterministicTileStrategyPosicionTest () {
+        // Arrange.
+        DeterministicTileStrategy estrategia = new DeterministicTileStrategy ();
+
+        Set <Board.Position> vacias = new LinkedHashSet <> ();
+        vacias.add (new Board.Position (2, 2));
+        vacias.add (new Board.Position (1, 2));
+        vacias.add (new Board.Position (1, 3));
+        Board.Position posicionGanadora = new Board.Position (1, 1);
+        vacias.add (posicionGanadora);
+        vacias.add (new Board.Position (3, 0));
+
+        // Mock para testear.
+        Board.Position clonTramposo = new Board.Position (1, 1) {
+            @Override
+            public int hashCode () {
+                return super.hashCode () + 1;
+            }
+            @Override
+            public boolean equals (Object o) {
+                return false;
+            }
+        };
+        vacias.add (clonTramposo);
+
+        // Act.
+        Board.Position elegida = estrategia.determinarPosicion (vacias);
+
+        // Assert.
+        assertSame (posicionGanadora, elegida);
     }
 }
