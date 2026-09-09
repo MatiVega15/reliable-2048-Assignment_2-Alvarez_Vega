@@ -42,10 +42,15 @@ public class Board {
     private int score;
 
     /**
+     * Estrategia de generación de nuevas fichas.
+     */
+    private final TileStrategy tileStrategy;
+
+    /**
      * Creates a new board of the default size (4x4) with two random tiles.
      */
-    public Board() {
-        this(DEFAULT_SIZE);
+    public Board () {
+        this (DEFAULT_SIZE, new RandomTileStrategy ());
     }
 
     /**
@@ -54,16 +59,28 @@ public class Board {
      * @param size the board size (must be > 0)
      * @throws IllegalArgumentException if size <= 0
      */
-    public Board(int size) {
+    public Board (int size) {
+        this (size, new RandomTileStrategy ());
+    }
+
+    /**
+     * Creates a new board with a specific size and tile generation strategy.
+     *
+     * @param size the board size (must be > 0)
+     * @param strategy the tile generation strategy
+     * @throws IllegalArgumentException if size <= 0
+     */
+    public Board (int size, TileStrategy strategy) {
         if (size <= 0) {
-            throw new IllegalArgumentException("Board size must be positive: " + size);
+            throw new IllegalArgumentException ("Board size must be positive: " + size);
         }
         this.size = size;
-        this.grid = new Cell[size][size];
+        this.grid = new Cell [size] [size];
         this.score = 0;
-        initializeEmpty();
-        addRandomTile();
-        addRandomTile();
+        this.tileStrategy = strategy;
+        initializeEmpty ();
+        addRandomTile ();
+        addRandomTile ();
     }
 
     /**
@@ -75,6 +92,7 @@ public class Board {
         this.size = other.size;
         this.grid = new Cell[size][size];
         this.score = other.score;
+        this.tileStrategy = other.tileStrategy;
         for (int r = 0; r < size; r++) {
             for (int c = 0; c < size; c++) {
                 this.grid[r][c] = other.grid[r][c];
@@ -259,8 +277,9 @@ public class Board {
             List <Cell> merged = procesarLinea (column);
 
             // Put back into the column
-            for (int row = 0; row < size; row++) {
-                grid[row][col] = merged.get(row);
+            int r = 0;
+            for (Cell c : merged) {
+                grid [r++] [col] = c;
             }
         }
 
@@ -286,8 +305,9 @@ public class Board {
             List <Cell> merged = procesarLinea (column);
 
             // Put back into the column (reverse back to original order)
-            for (int row = size - 1; row >= 0; row--) {
-                grid[row][col] = merged.get(size - 1 - row);
+            int r = size - 1;
+            for (Cell c : merged) {
+                grid [r--] [col] = c;
             }
         }
 
@@ -313,8 +333,9 @@ public class Board {
             List <Cell> merged = procesarLinea (rowList);
 
             // Put back into the row
-            for (int col = 0; col < size; col++) {
-                grid[row][col] = merged.get(col);
+            int c = 0;
+            for (Cell celda : merged) {
+                grid [row] [c++] = celda;
             }
         }
 
@@ -340,8 +361,9 @@ public class Board {
             List <Cell> merged = procesarLinea (rowList);
 
             // Put back into the row (reverse back to original order)
-            for (int col = size - 1; col >= 0; col--) {
-                grid[row][col] = merged.get(size - 1 - col);
+            int c = size - 1;
+            for (Cell celda : merged) {
+                grid [row] [c--] = celda;
             }
         }
 
@@ -409,24 +431,18 @@ public class Board {
      * Adds a random tile (2 or 4) to a random empty cell.
      * This method is private to maintain encapsulation - tiles are only added
      * during initialization or after successful moves.
-     *
-     * @return true if a tile was added, false if the board was full
      */
-    private boolean addRandomTile() {
-        Set<Position> empty = getEmptyPositions();
-        if (empty.isEmpty()) {
-            return false;
+    private void addRandomTile () {
+        Set <Position> empty = getEmptyPositions ();
+        if (empty.isEmpty ()) {
+            return;
         }
 
-        // Choose random position
-        int randomIndex = (int) (Math.random() * empty.size());
-        Position pos = empty.stream().skip(randomIndex).findFirst().get();
+        // Se delega la lógica a la estrategia inyectada.
+        Position pos = tileStrategy.determinarPosicion (empty);
+        int value = tileStrategy.determinarValor ();
 
-        // 90% chance of 2, 10% chance of 4 (standard 2048 rules)
-        int value = Math.random() < 0.9 ? 2 : 4;
-        grid[pos.row][pos.col] = new Cell(value);
-
-        return true;
+        grid [pos.row] [pos.col] = new Cell (value);
     }
 
     // ==================== UTILITY METHODS ====================
