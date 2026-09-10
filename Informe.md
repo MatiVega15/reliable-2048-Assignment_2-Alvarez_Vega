@@ -141,3 +141,53 @@ Como resultado de este proceso, se logró alcanzar un **100% de cobertura de mut
 | Cell.java | 100% (23/23) | 100% (28/28) | 100% (28/28) |
 | DeterministicTileStrategy.java | 100% (13/13) | 100% (8/8) | 100% (8/8) |
 | RandomTileStrategy.java | 100% (8/8) | 100% (4/4) | 100% (4/4) |
+
+## Fase 3.1: Generación Automática de Pruebas (Randoop)
+
+En esta etapa se empleó la **herramienta Randoop** para la exploración del dominio y la generación automatizada de casos de prueba sobre las clases `Board`, `Cell` y `DeterministicTileStrategy`. La clase `RandomTileStrategy` no fue considerada, debido a que su comportamiento depende de la generación de valores aleatorios y podría introducir **flakiness (comportamiento inestable)** en las pruebas generadas.
+
+Durante las ejecuciones iniciales se observó que los constructores por defecto de la clase `Board` (`Board ()` y `Board (int)`) instancian internamente una `RandomTileStrategy`. En consecuencia, los objetos `Board` creados mediante estos constructores pueden presentar **estados iniciales diferentes entre ejecuciones**, dificultando la reproducibilidad en las pruebas generadas.
+
+Para garantizar la total confiabilidad y reproducibilidad de la suite, se aplicó una **restricción durante la generación**: se indicó a Randoop que **no utilizara los constructores `Board ()` y `Board (int)`**, especificando sus firmas mediante el argumento `--omit-methods`. De esta forma, Randoop pudo utilizar el constructor `Board (int, TileStrategy)` **e instanciar los tableros inyectando explícitamente la `DeterministicTileStrategy`** desarrollada en la fase 2.
+
+El comando utilizado fue:
+
+```bash
+java -cp "lib/randoop-all-4.3.4.jar;target/classes" randoop.main.Main gentests --testclass=ar.edu.unrc.game2048.Cell --testclass=ar.edu.unrc.game2048.Board --testclass=ar.edu.unrc.game2048.DeterministicTileStrategy --omit-methods="ar.edu.unrc.game2048.Board\(\)" --omit-methods="ar.edu.unrc.game2048.Board\(int\)" --time-limit=30 --junit-output-dir=src/test/java --junit-package-name=randoopTests
+```
+
+Como resultado, durante un **tiempo límite de 30 segundos**, Randoop generó exitosamente una suite de regresión, [`RegressionTest0.java`](src/test/java/randoopTests/RegressionTest0.java), compuesta por **45 casos de prueba** completamente reproducibles.
+
+Para evaluar la efectividad de la generación automática de pruebas de manera aislada, **se ejecutó exclusivamente la suite generada por Randoop mediante Maven**. Se obtuvieron los siguientes resultados de cobertura estructural y de mutación.
+
+### Cobertura exclusiva de Randoop (JaCoCo)
+
+```bash
+mvn clean test jacoco:report "-Dtest=randoopTests.RegressionTest0"
+```
+
+| GROUP | PACKAGE | CLASS | INSTRUCTION MISSED | INSTRUCTION COVERED | BRANCH MISSED | BRANCH COVERED | LINE MISSED | LINE COVERED | COMPLEXITY MISSED | COMPLEXITY COVERED | METHOD MISSED | METHOD COVERED |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2048-game | ar.edu.unrc.game2048 | Cell | 34 | 98 | 9 | 19 | 4 | 19 | 9 | 15 | 1 | 9 |
+| 2048-game | ar.edu.unrc.game2048 | Board.Direction | 0 | 27 | 0 | 0 | 0 | 2 | 0 | 1 | 0 | 1 |
+| 2048-game | ar.edu.unrc.game2048 | Board | 111 | 798 | 24 | 90 | 17 | 146 | 24 | 58 | 5 | 20 |
+| 2048-game | ar.edu.unrc.game2048 | Board.Position | 17 | 45 | 6 | 4 | 1 | 9 | 6 | 3 | 1 | 3 |
+| 2048-game | ar.edu.unrc.game2048 | DeterministicTileStrategy | 2 | 43 | 1 | 9 | 1 | 12 | 1 | 7 | 0 | 3 |
+
+### Cobertura exclusiva de Randoop (PITest)
+
+```bash
+mvn pitest:mutationCoverage "-DtargetTests=randoopTests.RegressionTest*"
+```
+
+| Name | Line Coverage | Mutation Coverage | Test Strength |
+|---|---:|---:|---:|
+| Board.java | 90% (156/173) | 63% (92/145) | 74% (92/124) |
+| Cell.java | 83% (19/23) | 64% (18/28) | 75% (18/24) |
+| DeterministicTileStrategy.java | 92% (12/13) | 38% (3/8) | 38% (3/8) |
+
+### Análisis de resultados
+
+Al analizar las métricas obtenidas exclusivamente a partir de las pruebas generadas por Randoop, se observa un **contraste importante con respecto a la suite manual** desarrollada en la fase 2. Si bien la generación automática **logró una cobertura de líneas y ramas considerable**, la **cobertura de mutación fue significativamente menor**.
+
+Esto evidencia una de las **principales limitaciones de la generación aleatoria de pruebas**: las secuencias generadas pueden alcanzar y ejecutar una parte considerable del código y de sus caminos lógicos, pero **no necesariamente producen aserciones suficientemente precisas** para detectar comportamientos incorrectos. En otras palabras, una prueba puede ejecutar una determinada funcionalidad sin verificar de manera efectiva que el resultado obtenido sea el esperado.
