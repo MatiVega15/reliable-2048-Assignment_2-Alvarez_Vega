@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
+import java.lang.reflect.Field;
+
 
 /**
  * Testing de Unidad para los métodos públicos de la clase Cell.
@@ -25,6 +27,7 @@ public class CellTest {
         // Assert.
         assertTrue (celda.isEmpty ());
         assertEquals (valor, celda.getValue ());
+        assertTrue(celda.repOk());
     }
 
     /**
@@ -64,6 +67,7 @@ public class CellTest {
 
         // Assert.
         assertTrue(empty);
+        assertTrue(celda.repOk());
     }
 
     @Test
@@ -77,6 +81,7 @@ public class CellTest {
 
         // Assert.
         assertFalse(empty);
+        assertTrue(celda.repOk());
     }
 
     @Test
@@ -87,6 +92,7 @@ public class CellTest {
 
         // Act - Assert.
         assertEquals(2, celda.getValue());
+        assertTrue(celda.repOk());
     }
 
     @Test
@@ -98,6 +104,8 @@ public class CellTest {
         boolean canMerge = myCell1.canMergeWith(myCell2);
 
         assertTrue(canMerge);
+        assertTrue(myCell1.repOk());
+        assertTrue(myCell2.repOk());
     }
 
     @Test
@@ -109,6 +117,8 @@ public class CellTest {
         boolean canMerge = myCell1.canMergeWith(myCell2);
 
         assertFalse(canMerge);
+        assertTrue(myCell1.repOk());
+        assertTrue(myCell2.repOk());
     }
 
     @Test
@@ -120,6 +130,8 @@ public class CellTest {
         boolean canMerge = myCell1.canMergeWith(myCell2);
 
         assertFalse(canMerge);
+        assertTrue(myCell1.repOk());
+        assertTrue(myCell2.repOk());
     }
 
     /**
@@ -137,6 +149,8 @@ public class CellTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue(celda1.repOk());
+        assertTrue(celda2.repOk());
     }
 
     /**
@@ -154,6 +168,8 @@ public class CellTest {
         // Assert.
         assertFalse (resultado.isEmpty ());
         assertEquals (4, resultado.getValue ());
+        assertTrue(celda1.repOk());
+        assertTrue(celda2.repOk());
     }
 
     /**
@@ -166,6 +182,8 @@ public class CellTest {
         Cell celda2 = new Cell (4);
 
         // Act - Assert.
+        assertTrue(celda1.repOk());
+        assertTrue(celda2.repOk());
         assertThrows (IllegalArgumentException.class, () -> {celda1.mergeWith (celda2);});
     }
 
@@ -176,7 +194,8 @@ public class CellTest {
         Cell myCell2 = new Cell(value);
 
         boolean canMerge = myCell1.equals(myCell2);
-
+        assertTrue(myCell1.repOk());
+        assertTrue(myCell2.repOk());
         assertTrue(canMerge);
     }
 
@@ -188,7 +207,8 @@ public class CellTest {
         Cell myCell2 = new Cell(value2);
 
         boolean canMerge = myCell1.equals(myCell2);
-
+        assertTrue(myCell1.repOk());
+        assertTrue(myCell2.repOk());
         assertFalse(canMerge);
     }
 
@@ -205,6 +225,8 @@ public class CellTest {
         boolean resultado = celda1.equals (celda2);
 
         // Assert.
+        assertTrue(celda1.repOk());
+
         assertFalse (resultado);
     }
 
@@ -266,5 +288,33 @@ public class CellTest {
         // Act - Assert
         assertEquals("2", myCell.toString());
     }
+
+
+    @Test
+    public void repOkFalsoPorNoSerPotenciaDeDos() throws Exception {
+        // Arrange
+        Cell cell = new Cell(2);
+
+        Field field = Cell.class.getDeclaredField("value");
+        field.setAccessible(true);
+        field.setInt(cell, 3);
+
+        // Act - Assert
+        assertFalse(cell.repOk());
+    }
+
+        @Test
+    public void repOkFalsoPorSerNegativo() throws Exception {
+        // Arrange
+        Cell cell = new Cell(2);
+
+        Field field = Cell.class.getDeclaredField("value");
+        field.setAccessible(true);
+        field.setInt(cell, -3);
+
+        // Act - Assert
+        assertFalse(cell.repOk());
+    }
+
 
 }
