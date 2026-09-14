@@ -145,8 +145,7 @@ public final class Cell {
      * Cell is valid when it's either a power of 2, or 0 (representing an empty cell)
      * Returns false otherwise
      */
-    return value >= 0
-        && (value == 0 || esPotenciaDeDos(value));
+    return value >= 0 && (value == 0 || esPotenciaDeDos(value));
     }
 
 }
