@@ -25,3 +25,8 @@ replay_pid*
 
 .idea
 target
+
+# Evosuite.
+.scaffolding_list.tmp
+evosuite-report/
+evosuite-1.0.6.jar
