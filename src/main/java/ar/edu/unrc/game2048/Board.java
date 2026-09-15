@@ -498,6 +498,67 @@ public class Board {
         return sb.toString();
     }
 
+    /**
+     * Verifica que el Board se encuentre en un estado de representación válido.
+     *
+     * Invariantes de representación:
+     *  - size debe ser mayor que 0.
+     *  - grid no debe ser null.
+     *  - grid debe ser una matriz cuadrada de tamaño size x size.
+     *  - score debe ser mayor o igual a 0.
+     *  - Ninguna celda del grid debe ser null.
+     *  - Todas las celdas deben cumplir su propio invariante de representación.
+     *  - tileStrategy no debe ser null.
+     *
+     * @return true si el Board cumple todos los invariantes de representación,
+     *         false en caso contrario.
+     */
+    public boolean repOk () {
+        // El tamaño del tablero debe ser positivo.
+        if (size <= 0) {
+            return false;
+        }
+
+        // La matriz debe existir.
+        if (grid == null) {
+            return false;
+        }
+
+        // La matriz debe ser cuadrada.
+        if (grid.length != size) {
+            return false;
+        }
+
+        // El puntaje nunca debe ser negativo.
+        if (score < 0) {
+            return false;
+        }
+
+        for (int r = 0; r < size; r ++) {
+            // Se verifica que cada fila sea válida y tenga la cantidad correcta de columnas.
+            if (grid [r] == null || grid [r].length != size) {
+                return false;
+            }
+
+            for (int c = 0; c < size; c ++) {
+                Cell celda = grid [r] [c];
+
+                // Se verifica que todas las celdas sean válidas.
+                if (celda == null || !celda.repOk ()) {
+                    return false;
+                }
+            }
+        }
+
+        // La estrategia debe estar definida.
+        if (tileStrategy == null) {
+            return false;
+        }
+
+        // Board válido.
+        return true;
+    }
+
     // ==================== INNER CLASSES ====================
 
     /**

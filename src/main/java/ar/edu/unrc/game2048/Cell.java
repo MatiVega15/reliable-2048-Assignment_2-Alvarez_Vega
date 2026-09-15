@@ -139,13 +139,13 @@ public final class Cell {
         return value == 0 ? "." : String.valueOf(value);
     }
 
-    public boolean repOk() {
     /**
-     * Verifies that Cell is in a valid state
-     * Cell is valid when it's either a power of 2, or 0 (representing an empty cell)
-     * Returns false otherwise
+     * Verifies that Cell is in a valid state.
+     * Cell is valid when it's either a power of 2, or 0 (representing an empty cell).
+     *
+     * @return true if it is a valid cell, otherwise false.
      */
-    return value >= 0 && (value == 0 || esPotenciaDeDos(value));
+    public boolean repOk () {
+        return value >= 0 && (value == 0 || esPotenciaDeDos (value));
     }
-
 }
