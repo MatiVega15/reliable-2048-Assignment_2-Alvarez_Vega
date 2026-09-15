@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
+import java.lang.reflect.Field;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,7 +23,8 @@ public class BoardTest {
 
         // Assert.
         assertEquals (4, tablero.getSize ());
-        assertEquals (0, tablero.getScore());
+        assertEquals (0, tablero.getScore ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -38,7 +40,8 @@ public class BoardTest {
 
         // Assert.
         assertEquals (10, tablero.getSize ());
-        assertEquals (0, tablero.getScore());
+        assertEquals (0, tablero.getScore ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -66,6 +69,7 @@ public class BoardTest {
 
         // Assert.
         assertEquals (14, tablero.getEmptyPositions ().size ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -83,8 +87,10 @@ public class BoardTest {
 
         // Assert.
         assertEquals (10, resultado.getSize ());
-        assertEquals (0, resultado.getScore());
+        assertEquals (0, resultado.getScore ());
         assertEquals (celula1, resultado.getCell (0, 0));
+        assertTrue (tablero1.repOk ());
+        assertTrue (resultado.repOk ());
     }
 
     @Test
@@ -94,6 +100,7 @@ public class BoardTest {
         boolean isBoardCorrect = board.getSize() == value;
 
         assertTrue(isBoardCorrect);
+        assertTrue (board.repOk ());
     }
 
     @Test
@@ -104,6 +111,7 @@ public class BoardTest {
         boolean isBoardCorrect = board.getSize() == value2;
 
         assertFalse(isBoardCorrect);
+        assertTrue (board.repOk ());
     }
 
     @Test
@@ -117,6 +125,7 @@ public class BoardTest {
         boolean isValid = board.getScore() == value;
 
         assertFalse(isValid);
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -137,6 +146,7 @@ public class BoardTest {
 
         // Assert.
         assertEquals (4, resultado);
+        assertTrue (tablero.repOk ());
     }
 
     @Test
@@ -150,6 +160,7 @@ public class BoardTest {
         boolean isAdded = board.getCell(1, 0).equals(cell);
 
         assertTrue(isAdded);
+        assertTrue (board.repOk ());
     }
 
     @Test
@@ -163,6 +174,7 @@ public class BoardTest {
         boolean isWinning = board.isWinningBoard();
 
         assertTrue(isWinning);
+        assertTrue (board.repOk ());
     }
 
     @Test
@@ -176,6 +188,7 @@ public class BoardTest {
         boolean isWinning = board.isWinningBoard();
 
         assertFalse(isWinning);
+        assertTrue (board.repOk ());
     }
 
     @Test
@@ -192,6 +205,7 @@ public class BoardTest {
         board.setCell(1, 1, cell4);
         // Act - Assert
         assertTrue(board.isLosingBoard());
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -211,6 +225,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -230,6 +245,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -254,6 +270,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -278,6 +295,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -297,6 +315,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     @Test
@@ -313,12 +332,13 @@ public class BoardTest {
         board.setCell(1, 1, cell4);
         // Act - Assert
         assertTrue(board.isFull());
+        assertTrue (board.repOk ());
     }
 
     @Test
     public void testFullBoardNoLlenoConCeldas(){
         //Arrange
-                Board board = new Board(2);
+        Board board = new Board(2);
         Cell cell1 = new Cell(4);
         Cell cell2 = new Cell(16);
         Cell cell3 = new Cell(8);
@@ -328,14 +348,16 @@ public class BoardTest {
         board.setCell(1, 1, cell2);
         // Act - Assert
         assertFalse(board.isFull());
+        assertTrue (board.repOk ());
     }
 
     @Test
     public void testFullBoardNoLlenoSinCeldas(){
         //Arrange
-                Board board = new Board(2);
+        Board board = new Board(2);
         // Act - Assert
         assertFalse(board.isFull());
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -355,6 +377,7 @@ public class BoardTest {
 
         // Assert.
         assertTrue (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -371,6 +394,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -391,6 +415,7 @@ public class BoardTest {
         // Assert.
         assertTrue (resultado);
         assertEquals (2, tablero.getEmptyPositions ().size ());
+        assertTrue (tablero.repOk ());
     }
 
     @Test
@@ -409,6 +434,7 @@ public class BoardTest {
         boolean movedUp = board.getCell(0, 0).equals(finalCell);
 
         assertTrue(movedUp);
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -432,6 +458,7 @@ public class BoardTest {
         assertEquals (4, tablero.getCell (1, 0).getValue ());
         assertEquals (8, tablero.getCell (0, 1).getValue ());
         assertEquals (16, tablero.getCell (1, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -453,6 +480,7 @@ public class BoardTest {
         assertTrue (resultado);
         assertEquals (2, tablero.getCell (0, 0).getValue ());
         assertEquals (8, tablero.getCell (0, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     @Test
@@ -471,6 +499,7 @@ public class BoardTest {
         boolean movedUp = board.getCell(3, 0).equals(finalCell);
 
         assertTrue(movedUp);
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -492,6 +521,7 @@ public class BoardTest {
         assertFalse (resultado);
         assertEquals (2, tablero.getCell (1, 0).getValue ());
         assertEquals (8, tablero.getCell (1, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -513,6 +543,7 @@ public class BoardTest {
         assertTrue (resultado);
         assertEquals (2, tablero.getCell (1, 0).getValue ());
         assertEquals (8, tablero.getCell (1, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -539,6 +570,7 @@ public class BoardTest {
         assertFalse (resultado);
         assertEquals (2, tablero.getCell (1, 0).getValue ());
         assertEquals (4, tablero.getCell (2, 0).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -562,6 +594,7 @@ public class BoardTest {
         assertEquals (32, tablero.getCell (1, 1).getValue ());
         assertNotEquals (16, tablero.getCell (0, 0).getValue ());
         assertNotEquals (32, tablero.getCell (0, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     @Test
@@ -580,6 +613,7 @@ public class BoardTest {
         boolean movedUp = board.getCell(0, 0).equals(finalCell);
 
         assertTrue(movedUp);
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -603,6 +637,7 @@ public class BoardTest {
         assertEquals (4, tablero.getCell (0, 1).getValue ());
         assertEquals (0, tablero.getCell (1, 0).getValue ());
         assertEquals (0, tablero.getCell (1, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -624,6 +659,7 @@ public class BoardTest {
         assertTrue (resultado);
         assertEquals (2, tablero.getCell (0, 0).getValue ());
         assertEquals (4, tablero.getCell (1, 0).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     @Test
@@ -642,6 +678,7 @@ public class BoardTest {
         boolean movedUp = board.getCell(0, 3).equals(finalCell);
 
         assertTrue(movedUp);
+        assertTrue (board.repOk ());
     }
 
     /**
@@ -665,6 +702,7 @@ public class BoardTest {
         assertEquals (4, tablero.getCell (0, 1).getValue ());
         assertEquals (0, tablero.getCell (1, 0).getValue ());
         assertEquals (2, tablero.getCell (1, 1).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -693,6 +731,7 @@ public class BoardTest {
         assertEquals (2, tablero.getCell (1, 1).getValue ());
         assertEquals (4, tablero.getCell (1, 2).getValue ());
         assertEquals (2, tablero.getCell (2, 2).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -716,6 +755,7 @@ public class BoardTest {
         assertEquals (128, tablero.getCell (1, 1).getValue ());
         assertNotEquals (64, tablero.getCell (0, 0).getValue ());
         assertNotEquals (128, tablero.getCell (1, 0).getValue ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -735,6 +775,7 @@ public class BoardTest {
 
         // Assert.
         assertEquals (1, conjunto.size ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -754,6 +795,7 @@ public class BoardTest {
 
         // Assert.
         assertTrue (conjunto.isEmpty ());
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -825,6 +867,7 @@ public class BoardTest {
 
         // Assert.
         assertEquals (celda, resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -891,6 +934,7 @@ public class BoardTest {
 
         // Assert.
         assertTrue (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -906,6 +950,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -921,6 +966,7 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -945,6 +991,8 @@ public class BoardTest {
 
         // Assert.
         assertTrue (resultado);
+        assertTrue (tablero1.repOk ());
+        assertTrue (tablero2.repOk ());
     }
 
     /**
@@ -961,6 +1009,8 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero1.repOk ());
+        assertTrue (tablero2.repOk ());
     }
 
     /**
@@ -989,6 +1039,8 @@ public class BoardTest {
 
         // Assert.
         assertFalse (resultado);
+        assertTrue (tablero1.repOk ());
+        assertTrue (tablero2.repOk ());
     }
 
     /**
@@ -1014,6 +1066,8 @@ public class BoardTest {
 
         // Assert.
         assertEquals (hash1, hash2);
+        assertTrue (tablero1.repOk ());
+        assertTrue (tablero2.repOk ());
     }
 
     /**
@@ -1039,6 +1093,8 @@ public class BoardTest {
 
         // Assert.
         assertNotEquals (hash1, hash2);
+        assertTrue (tablero1.repOk ());
+        assertTrue (tablero2.repOk ());
     }
 
     /**
@@ -1066,6 +1122,7 @@ public class BoardTest {
                 "+-----+-----+\n";
 
         assertEquals (esperado, resultado);
+        assertTrue (tablero.repOk ());
     }
 
     /**
@@ -1333,5 +1390,184 @@ public class BoardTest {
 
         // Assert.
         assertSame (posicionGanadora, elegida);
+    }
+
+    /**
+     * Test para el método repOk con tamaño inválido.
+     */
+    @Test
+    public void repOkFalsoPorSizeInvalidoTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field size = Board.class.getDeclaredField ("size");
+        size.setAccessible (true);
+        size.setInt (tablero, 0);
+        Field grid = Board.class.getDeclaredField ("grid");
+        grid.setAccessible (true);
+        grid.set (tablero, new Cell [0] [0]);
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con puntaje negativo.
+     */
+    @Test
+    public void repOkFalsoPorScoreNegativoTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field score = Board.class.getDeclaredField ("score");
+        score.setAccessible (true);
+        score.setInt (tablero, -1);
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con la matriz grid nula.
+     */
+    @Test
+    public void repOkFalsoPorGridNuloTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field grid = Board.class.getDeclaredField ("grid");
+        grid.setAccessible (true);
+        grid.set (tablero, null);
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con un tamaño diferente al de la matriz grid.
+     */
+    @Test
+    public void repOkFalsoPorGridDeTamañoIncorrectoTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field size = Board.class.getDeclaredField ("size");
+        size.setAccessible (true);
+        size.set (tablero, 3);
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con una fila de la matriz grid nula.
+     */
+    @Test
+    public void repOkFalsoPorFilaNulaTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field grid = Board.class.getDeclaredField ("grid");
+        grid.setAccessible (true);
+        Cell [] [] matriz = (Cell [] []) grid.get (tablero);
+        matriz [0] = null;
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con una fila de la matriz grid de tamaño incorrecto.
+     */
+    @Test
+    public void repOkFalsoPorFilaDeTamañoIncorrectoTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field grid = Board.class.getDeclaredField ("grid");
+        grid.setAccessible (true);
+        Cell [] [] matriz = (Cell [] []) grid.get (tablero);
+        matriz [0] = new Cell [1];
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con una celda nula.
+     */
+    @Test
+    public void repOkFalsoPorCeldaNulaTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field grid = Board.class.getDeclaredField ("grid");
+        grid.setAccessible (true);
+        Cell [] [] matriz = (Cell [] []) grid.get (tablero);
+        matriz [0] [0] = null;
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con una celda que no cumple su invariante de representación.
+     */
+    @Test
+    public void repOkFalsoPorCeldaInvalidaTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+        Cell celula = new Cell (2);
+
+        Field value = Cell.class.getDeclaredField ("value");
+        value.setAccessible (true);
+        value.setInt (celula, 3);
+        tablero.setCell (0, 0, celula);
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
+    }
+
+    /**
+     * Test para el método repOk con la estrategia de generación de fichas nula.
+     */
+    @Test
+    public void repOkFalsoPorTileStrategyNulaTest () throws Exception {
+        // Arrange.
+        Board tablero = new Board (2);
+
+        Field tileStrategy = Board.class.getDeclaredField ("tileStrategy");
+        tileStrategy.setAccessible (true);
+        tileStrategy.set (tablero, null);
+
+        // Act.
+        boolean resultado = tablero.repOk ();
+
+        // Assert.
+        assertFalse (resultado);
     }
 }
