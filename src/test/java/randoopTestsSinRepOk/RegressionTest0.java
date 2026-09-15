@@ -1,4 +1,4 @@
-package randoopTests;
+package randoopTestsSinRepOk;
 
 import org.junit.FixMethodOrder;
 import org.junit.Test;
