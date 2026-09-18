@@ -58,11 +58,9 @@
                     <targetTests>
                         <param>ar.edu.unrc.game2048.*Test</param>
                         <param>ar.edu.unrc.game2048.*Tests</param>
-                        <param>randoopTestsSinRepOk.*Test</param>
-                        <param>randoopTestsConRepOk.*Test</param>
                         <param>evosuite.*Test</param>
                     </targetTests>
-                    <threads>4</threads>
+                    <threads>1</threads>
                     <timestampedReports>false</timestampedReports>
                     <outputFormats>
                         <format>HTML</format>
@@ -76,8 +74,13 @@
                 <version>3.0.0-M9</version>
                 <configuration>
                     <includes>
-                        <include>**/*Test.java</include>
+                        <include>**/*Test*.java</include>
                     </includes>
+                    <excludes>
+                        <exclude>randoopTestsSinRepOk/RegressionTest.java</exclude>
+                        <exclude>randoopTestsConRepOk/RegressionTest.java</exclude>
+                        <exclude>randoopTestsConCheckRep/RegressionTest.java</exclude>
+                    </excludes>
                 </configuration>
             </plugin>
             <plugin>

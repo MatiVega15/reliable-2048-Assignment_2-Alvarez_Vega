@@ -2,6 +2,8 @@ package ar.edu.unrc.game2048;
 
 import java.util.*;
 
+import randoop.CheckRep;
+
 /**
  * Represents the 2048 game board.
  * The board is a square grid of Cells, typically 4x4.
@@ -513,6 +515,7 @@ public class Board {
      * @return true si el Board cumple todos los invariantes de representación,
      *         false en caso contrario.
      */
+    @CheckRep
     public boolean repOk () {
         // El tamaño del tablero debe ser positivo.
         if (size <= 0) {
