@@ -153,7 +153,7 @@ Para garantizar la total confiabilidad y reproducibilidad de la suite, se aplic�
 El comando utilizado fue:
 
 ```bash
-java -cp "lib/randoop-all-4.3.4.jar;target/classes" randoop.main.Main gentests --testclass=ar.edu.unrc.game2048.Cell --testclass=ar.edu.unrc.game2048.Board --testclass=ar.edu.unrc.game2048.DeterministicTileStrategy --omit-methods="ar.edu.unrc.game2048.Board\(\)" --omit-methods="ar.edu.unrc.game2048.Board\(int\)" --time-limit=30 --junit-output-dir=src/test/java --junit-package-name=randoopTestsSinRepOk
+java -cp "lib/randoop-all-4.3.4.jar:target/classes" randoop.main.Main gentests --testclass=ar.edu.unrc.game2048.Cell --testclass=ar.edu.unrc.game2048.Board --testclass=ar.edu.unrc.game2048.DeterministicTileStrategy --omit-methods="ar.edu.unrc.game2048.Board\(\)" --omit-methods="ar.edu.unrc.game2048.Board\(int\)" --time-limit=30 --junit-output-dir=src/test/java --junit-package-name=randoopTestsSinRepOk
 ```
 
 Como resultado, durante un **tiempo límite de 30 segundos**, Randoop generó exitosamente una suite de regresión, [`RegressionTest0.java`](src/test/java/randoopTestsSinRepOk/RegressionTest0.java), compuesta por **45 casos de prueba** completamente reproducibles.
@@ -222,7 +222,7 @@ Se mantuvieron las **mismas restricciones utilizadas en la primera ejecución**:
 El comando utilizado fue:
 
 ```bash
-java -cp "lib/randoop-all-4.3.4.jar;target/classes" randoop.main.Main gentests --testclass=ar.edu.unrc.game2048.Cell --testclass=ar.edu.unrc.game2048.Board --testclass=ar.edu.unrc.game2048.DeterministicTileStrategy --omit-methods="ar.edu.unrc.game2048.Board\(\)" --omit-methods="ar.edu.unrc.game2048.Board\(int\)" --time-limit=30 --junit-output-dir=src/test/java --junit-package-name=randoopTestsConRepOk
+java -cp "lib/randoop-all-4.3.4.jar:target/classes" randoop.main.Main gentests --testclass=ar.edu.unrc.game2048.Cell --testclass=ar.edu.unrc.game2048.Board --testclass=ar.edu.unrc.game2048.DeterministicTileStrategy --omit-methods="ar.edu.unrc.game2048.Board\(\)" --omit-methods="ar.edu.unrc.game2048.Board\(int\)" --time-limit=30 --junit-output-dir=src/test/java --junit-package-name=randoopTestsConRepOk
 ```
 
 La ejecución finalizó correctamente luego de un **tiempo límite de 30 segundos**. Randoop exploró las tres clases indicadas y generó **523 casos de prueba de regresión**, distribuidos entre [`RegressionTest0.java`](src/test/java/randoopTestsConRepOk/RegressionTest0.java) y [`RegressionTest1.java`](src/test/java/randoopTestsConRepOk/RegressionTest1.java).
@@ -276,3 +276,85 @@ La mejora más significativa se observa en la cobertura de mutación obtenida co
 El aumento de la cobertura de mutación indica que la nueva suite no solo explora más código, sino que también posee una **mayor capacidad para detectar comportamientos incorrectos**.
 
 En conclusión, **la nueva ejecución de Randoop produjo una mejora sustancial en la calidad y capacidad de detección de las pruebas**, aún cuando no todas las métricas porcentuales de cobertura estructural aumentaron. La diferencia entre ambas ejecuciones también muestra que **un mayor número de pruebas no implica necesariamente un aumento proporcional de la cobertura de código**: al incorporar nuevos comportamientos e invariantes, también aumenta el código que debe ser cubierto. Por ese motivo, en este caso resulta especialmente importante **analizar conjuntamente la cobertura estructural, la cobertura de mutación y el Test Strength**.
+
+## Fase 3.3: Incorporación de `@CheckRep` y nueva generación de pruebas
+
+Como etapa final del experimento con Randoop, **se incorporó la anotación `@CheckRep` sobre los métodos `repOk ()` de las clases `Cell` y `Board`**.
+
+La anotación permite indicar explícitamente a Randoop que dichos métodos corresponden a **chequeos de la representación de los objetos**. De esta manera, **Randoop debe utilizar los invariantes de representación** durante la exploración del dominio y durante la generación de las secuencias de prueba.
+
+Se mantuvieron las mismas **restricciones utilizadas en las ejecuciones anteriores**: no se incluyeron los constructores `Board ()` y `Board (int)`, debido a que utilizan internamente `RandomTileStrategy`. En su lugar, Randoop utilizó el constructor `Board (int, TileStrategy)`, permitiendo trabajar con `DeterministicTileStrategy` y mantener la reproducibilidad de las pruebas.
+
+El comando utilizado fue:
+
+```bash
+java -cp "lib/randoop-all-4.3.4.jar:target/classes" randoop.main.Main gentests --testclass=ar.edu.unrc.game2048.Cell --testclass=ar.edu.unrc.game2048.Board --testclass=ar.edu.unrc.game2048.DeterministicTileStrategy --omit-methods="ar.edu.unrc.game2048.Board\(\)" --omit-methods="ar.edu.unrc.game2048.Board\(int\)" --time-limit=30 --junit-output-dir=src/test/java --junit-package-name=randoopTestsConCheckRep
+```
+
+La generación produjo una **suite [`RegressionTest0.java`](src/test/java/randoopTestsConCheckRep/RegressionTest0.java) compuesta por 41 casos de prueba**.
+
+### Cobertura estructural de Randoop con `@CheckRep` (JaCoCo)
+
+Para medir la cobertura producida exclusivamente por esta suite se ejecutó:
+
+```bash
+mvn clean test jacoco:report "-Dtest=randoopTestsConCheckRep.RegressionTest0"
+```
+
+Los resultados obtenidos fueron:
+
+| Group | Package | Class | Instruction Missed | Instruction Covered | Branch Missed | Branch Covered | Line Missed | Line Covered | Complexity Missed | Complexity Covered | Method Missed | Method Covered |
+|---|---|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 2048-game | ar.edu.unrc.game2048 | Cell | 70 | 95 | 18 | 16 | 7 | 17 | 15 | 13 | 2 | 9 |
+| 2048-game | ar.edu.unrc.game2048 | Board.Direction | 0 | 44 | 0 | 0 | 0 | 2 | 0 | 1 | 0 | 1 |
+| 2048-game | ar.edu.unrc.game2048 | Board | 233 | 756 | 53 | 83 | 43 | 138 | 42 | 52 | 6 | 20 |
+| 2048-game | ar.edu.unrc.game2048 | Board.Position | 28 | 45 | 6 | 4 | 1 | 9 | 6 | 3 | 1 | 3 |
+| 2048-game | ar.edu.unrc.game2048 | DeterministicTileStrategy | 5 | 40 | 2 | 8 | 2 | 11 | 2 | 6 | 0 | 3 |
+
+Un aspecto relevante es que **el método `repOk ()` no presenta cobertura directa en esta ejecución**. Esto es consistente con el comportamiento esperado de `@CheckRep`: la anotación permite que Randoop utilice el método como chequeo de representación durante la generación y ejecución de pruebas, pero esto no implica que se generen necesariamente casos de prueba cuyo objetivo sea invocar explícitamente `repOk ()` como una operación observable de la clase.
+
+### Cobertura de mutación de Randoop con `@CheckRep` (PITest)
+
+Para evaluar la capacidad de esta nueva suite para detectar modificaciones artificiales se ejecutó:
+
+```bash
+mvn pitest:mutationCoverage "-DtargetTests=randoopTestsConCheckRep.RegressionTest0"
+```
+
+Los resultados obtenidos fueron:
+
+| Name | Line Coverage | Mutation Coverage | Test Strength |
+|---|---:|---:|---:|
+| Board.java | 77% (148/191) | 49% (83/168) | 70% (83/118) |
+| Cell.java | 71% (17/24) | 52% (17/33) | 85% (17/20) |
+| DeterministicTileStrategy.java | 85% (11/13) | 38% (3/8) | 38% (3/8) |
+
+### Análisis de resultados
+
+La incorporación de `CheckRep` produjo un **resultado diferente** al observado al pasar de la primera ejecución de Randoop a la ejecución con `RepOk ()`.
+
+En primer lugar, **la cantidad de pruebas generadas disminuyó considerablemente**. La ejecución sin `repOk ()` produjo **45 pruebas**, mientras que la ejecución con `repOk ()` produjo **523 pruebas**. Al incorporar `@CheckRep`, la suite generada utilizada en el experimento final estuvo compuesta por **41 pruebas**.
+
+Por lo tanto, en este caso **la cantidad de pruebas generadas por Randoop no constituye por sí sola una medida de efectividad**.
+
+Las **métricas de cobertura estructural obtenidas con JaCoCo** muestran que la suite con `@CheckRep` alcanza una parte significativa del código de las clases de interés, aunque no alcanza los niveles de cobertura obtenidos por la suite generada con `repOk ()` sin anotación. **La misma tendencia se observa con PITest**.
+
+| Clase | Mutation Coverage con `repOk` | Mutation Coverage con `@CheckRep` | Test Strength con `repOk` | Test Strength con `@CheckRep` |
+|---|---:|---:|---:|---:|
+| `Board` | 69% | 49% | 89% | 70% |
+| `Cell` | 91% | 52% | 97% | 85% |
+| `DeterministicTileStrategy` | 88% | 38% | 88% | 38% |
+
+**Este resultado debe interpretarse teniendo en cuenta que se están comparando suites de tamaños muy diferentes**.
+
+Considerando las **tres configuraciones experimentadas**, se obtuvieron los siguientes resultados:
+
+| Configuración | Tests generados | Mutation Coverage `Board` | Mutation Coverage `Cell` | Mutation Coverage `DeterministicTileStrategy` |
+|---|---:|---:|---:|---:|
+| Sin `repOk` | 45 | 63% | 64% | 38% |
+| Con `repOk` | 523 | 69% | 91% | 88% |
+| Con `repOk` + `@CheckRep` | 41 | 49% | 52% | 38% |
+
+Los resultados muestran que **la incorporación de `repOk ()` tuvo un impacto significativo** sobre la generación de pruebas en el experimento realizado, aumentando considerablemente la cantidad de secuencias generadas y mejorando las métricas de mutación respecto de la primera ejecución.
+
+En cambio, **la posterior incorporación de `@CheckRep` produjo una suite mucho más pequeña y, en esta ejecución concreta, métricas inferiores**. Esto no permite concluir que `@CheckRep` sea perjudicial en general, sino que muestra que **su efecto depende de las secuencias generadas y de la interacción entre los invariantes de representación y el proceso de exploración de Randoop**. De todas maneras, **ninguno de estos mecanismos reemplaza la necesidad de verificar el comportamiento funcional mediante aserciones y pruebas específicas**.
